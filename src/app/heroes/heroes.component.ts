@@ -14,6 +14,7 @@ export class HeroesComponent implements OnInit {
 
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
+    this.heroService.logMessage(`Selected hero: ${this.selectedHero.id} - ${this.selectedHero.name}`);
   }
 
   constructor(private heroService: HeroService) { }
