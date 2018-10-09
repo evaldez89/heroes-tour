@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Hero } from './hero';
-import { HEROES } from './mock-heores';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class HeroService {
 
   constructor(
@@ -33,6 +37,21 @@ export class HeroService {
       catchError(this.handleError<Hero>(`getHero id=${id}`))
     );
   }
+
+  updateHero(hero: Hero): Observable<any> {
+    return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
+      tap(_ => this.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
+  deleteHero(hero: Hero): Observable<any> {
+    return this.http.delete(`${this.heroesUrl}${hero.id}`, httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${hero.id}`)),
+      catchError(this.handleError<any>('deleteHero'))
+    );
+  }
+
 
   logMessage(message: string): void {
     this.messageService.add(message);
