@@ -20,11 +20,11 @@ export class HeroService {
     private http: HttpClient
   ) { }
 
-  private heroesUrl = 'http://127.0.0.1:8000/heroes/';
+  private heroesUrl = 'http://127.0.0.1:8000/';
 
 
   getHeroes(): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl).pipe(
+    return this.http.get<Hero[]>(`${this.heroesUrl}heroes/`).pipe(
       tap(heroes => this.log('fetched heroes')),
       catchError(this.handleError('getHeroes', []))
     );
@@ -32,14 +32,14 @@ export class HeroService {
 
   getHero(id: number): Observable<Hero> {
     this.messageService.add(`HeroService: fetched hero id=${id}`);
-    return this.http.get<Hero>(`${this.heroesUrl}${id}`).pipe(
+    return this.http.get<Hero>(`${this.heroesUrl}hero/${id}`).pipe(
       tap(_ => this.log(`feched hero id=${id}`)),
       catchError(this.handleError<Hero>(`getHero id=${id}`))
     );
   }
 
   updateHero(hero: Hero): Observable<any> {
-    return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
+    return this.http.put(`${this.heroesUrl}hero/${hero.id}/`, hero, httpOptions).pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
     );
