@@ -6,3 +6,22 @@
     </a>
   </li>
 </ul>
+<div>
+  <label>Hero name:
+    <input #heroName />
+  </label>
+</div>
+<div>
+  <label>Super Power:
+    <input #super_power />
+  </label>
+</div>
+  <label>Strength:
+    <input #strength />
+  </label>
+<div>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(heroName.value, super_power.value, strength.value); heroName.value='';super_power.value='';strength.value=''">
+    add
+  </button>
+</div>

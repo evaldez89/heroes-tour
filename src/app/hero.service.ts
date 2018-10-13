@@ -46,9 +46,18 @@ export class HeroService {
   }
 
   deleteHero(hero: Hero): Observable<any> {
-    return this.http.delete(`${this.heroesUrl}${hero.id}`, httpOptions).pipe(
+    return this.http.delete(`${this.heroesUrl}hero/${hero.id}`, httpOptions).pipe(
       tap(_ => this.log(`deleted hero id=${hero.id}`)),
       catchError(this.handleError<any>('deleteHero'))
+    );
+  }
+
+  /** POST: add a new hero to the server */
+  addHero(hero: Hero): Observable<Hero> {
+    console.log('aqui');
+    return this.http.post<Hero>(`${this.heroesUrl}heroes/`, hero, httpOptions).pipe(
+      tap(_ => this.log(`added hero w/ id=${hero.id}`)),
+      catchError(this.handleError<Hero>('addHero'))
     );
   }
 
